@@ -1,8 +1,79 @@
 <html>
-    <head>
+<head>
+    <style>
+        .schedule {
+            display: grid;
+            grid-column-gap: 2px;
+            grid-template-columns:
+                    [stage-1-start] 1fr
+                    [stage-1-end stage-2-start] 1fr
+                    [stage-2-end stage-3-start] 1fr
+                    [stage-3-end stage-4-start] 1fr
+                    [stage-4-end stage-5-start] 1fr
+                    [stage-5-end];
+            grid-template-rows:
+                    [stages] auto
+                    {{ range .GetTime }}
+                    [{{ . }}] 6px
+                    {{ end }};
+        }
 
-    </head>
-    <body>
-        Source: {{ .Url }}
-    </body>
+        h1 {
+            text-align: center;
+        }
+
+        .stage {
+            text-align: center;
+            grid-row: stages;
+        }
+
+        .band {
+            border-radius: .5em;
+            padding: .8em;
+            border: 1px solid black;
+        }
+
+        .bandName {
+            font-size: 12px;
+        }
+
+        .bandInterval {
+            font-size: 10px;
+        }
+
+
+            body{
+                width: 21cm;
+                height: 29.7cm;
+                margin: 0mm 0mm 0mm 0mm;
+                /* change the margins as you want them to be. */
+            }
+
+            .footnote {
+                text-align: center;
+                font-size: 8px;
+                page-break-after:always;
+            }
+    </style>
+</head>
+<body>
+{{ range .Days }}
+<h1>{{ $.GetTitle . }}</h1>
+<div class='schedule'>
+    <h3 class='stage' style="grid-column: stage-1;">South Stage</h3>
+    <h3 class='stage' style="grid-column: stage-2;">North Stage</h3>
+    <h3 class='stage' style="grid-column: stage-3;">Marquee</h3>
+    <h3 class='stage' style="grid-column: stage-4;">Jupiler Stage</h3>
+    <h3 class='stage' style="grid-column: stage-5;">Metal Dome</h3>
+
+    {{ range .Bands }}
+        <div class="band" style="grid-column: {{ $.GetStageIndex .Stage }}; grid-row: {{ .StartStr }} / {{ .EndStr }};">
+            <div class="bandName">{{ .Name }}</div>
+            <div class="bandInterval">{{ .IntervalStr }}</div>
+        </div>
+    {{ end }}
+</div>
+<div class="footnote">{{$.Footnote}}</div>
+{{ end }}
+</body>
 </html>

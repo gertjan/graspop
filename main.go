@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,20 +13,33 @@ import (
 	"golang.org/x/net/html"
 )
 
-type day struct {
+type Day struct {
 	Day   time.Time
 	Url   string
 	Stage string
-	Bands []band
+	Bands []Band
 }
 
-type band struct {
+type Band struct {
 	Name  string
+	Stage string
 	Start time.Time
 	End   time.Time
 }
 
-func (d *day) getBands(n *html.Node) {
+func (b Band) StartStr() string {
+	return b.Start.Format("time-1504")
+}
+
+func (b Band) EndStr() string {
+	return b.End.Format("time-1504")
+}
+
+func (b Band) IntervalStr() string {
+	return fmt.Sprintf("%v - %v", b.Start.Format("15:04"), b.End.Format("15:04"))
+}
+
+func (d *Day) getBands(n *html.Node) {
 	if n.Type == html.ElementNode && n.Data == "h4" {
 		for _, a := range n.Attr {
 			if a.Key == "class" && a.Val == "act-schedule__title" {
@@ -40,7 +54,8 @@ func (d *day) getBands(n *html.Node) {
 				name := n.FirstChild.NextSibling.FirstChild.Data
 				start := n.FirstChild.NextSibling.NextSibling.NextSibling.FirstChild.Data
 				end := n.FirstChild.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.FirstChild.Data
-				d.addBand(name, start, end)
+
+				d.addBand(name, d.toTime(start), d.toTime(end))
 			}
 		}
 	}
@@ -50,7 +65,7 @@ func (d *day) getBands(n *html.Node) {
 	}
 }
 
-func (d *day) toTime(str string) time.Time {
+func (d *Day) toTime(str string) time.Time {
 	t := strings.Split(str, ".")
 	h, _ := strconv.ParseInt(t[0], 0, 0)
 	m, _ := strconv.ParseInt(t[1], 0, 0)
@@ -64,11 +79,16 @@ func (d *day) toTime(str string) time.Time {
 	return result
 }
 
-func (d *day) addBand(name string, start string, end string) {
-	d.Bands = append(d.Bands, band{name, d.toTime(start), d.toTime(end)})
+func (d *Day) addBand(name string, start time.Time, end time.Time) {
+	d.Bands = append(d.Bands, Band{
+		Name:  name,
+		Stage: d.Stage,
+		Start: start,
+		End:   end,
+	})
 }
 
-func (d *day) retrieveSchedule() {
+func (d *Day) retrieveSchedule() {
 	resp, err := http.Get(d.Url)
 	if err != nil {
 		log.Fatal(err)
@@ -83,9 +103,62 @@ func (d *day) retrieveSchedule() {
 	d.getBands(doc)
 }
 
+func (s Schedule) GetTitle(d Day) string {
+	return strings.ToTitle(strings.TrimSuffix(strings.TrimPrefix(d.Url, "https://www.graspop.be/nl/line-up/"), "/schedule"))
+}
+
+func (s Schedule) GetTime() []string {
+	last := s.Days[0].Day.Add(14 * time.Hour)
+
+	times := make([]string, 0)
+	for t := s.Days[0].Day; t.Before(last); t = t.Add(5 * time.Minute) {
+		times = append(times, t.Format("time-1504"))
+	}
+
+	return times
+}
+
+func (s Schedule) GetDisplayTimes() []string {
+	last := s.Days[0].Day.Add(14 * time.Hour)
+
+	times := make([]string, 0)
+	for t := s.Days[0].Day; t.Before(last); t = t.Add(30 * time.Minute) {
+		times = append(times, t.Format("time-1504"))
+	}
+
+	return times
+}
+
+type Schedule struct {
+	Days     []*Day
+	Footnote string
+}
+
+func (s Schedule) GetStageIndex(stageName string) string {
+
+	switch stageName {
+	case "South Stage":
+		return "stage-1"
+	case "North Stage":
+		return "stage-2"
+	case "Marquee":
+		return "stage-3"
+	case "Jupiler Stage":
+		return "stage-4"
+	case "Metal Dome":
+		return "stage-5"
+	default:
+		log.Fatal(stageName)
+		return ""
+	}
+
+}
+
 func main() {
-	bands := make([]band, 0)
-	days := []day{
+	footnote := time.Now().Format("Retrieved from https://www.graspop.be - 2006-01-02 15:04")
+
+	bands := make([]Band, 0)
+	days := []*Day{
 		{time.Date(2023, 6, 15, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
 		{time.Date(2023, 6, 16, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
 		{time.Date(2023, 6, 17, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
@@ -99,8 +172,15 @@ func main() {
 
 	for _, d := range days {
 		d.retrieveSchedule()
-		if err = t.Execute(os.Stdout, d); err != nil {
-			log.Fatal(err)
-		}
+	}
+
+	s := Schedule{
+		Days:     days,
+		Footnote: footnote,
+	}
+
+	out, _ := os.Create("schedule.html")
+	if err = t.Execute(out, s); err != nil {
+		log.Fatal(err)
 	}
 }
