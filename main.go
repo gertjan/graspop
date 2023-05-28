@@ -183,7 +183,7 @@ func main() {
 		Footnote: footnote,
 	}
 
-	out, _ := os.Create("schedule.html")
+	out, _ := os.Create("output/schedule.html")
 	if err = t.Execute(out, s); err != nil {
 		log.Fatal(err)
 	}
