@@ -80,6 +80,10 @@ func (d *Day) toTime(str string) time.Time {
 }
 
 func (d *Day) addBand(name string, start time.Time, end time.Time) {
+	if d.Stage == "Classic Rock Café" {
+		return
+	}
+
 	d.Bands = append(d.Bands, Band{
 		Name:  name,
 		Stage: d.Stage,
