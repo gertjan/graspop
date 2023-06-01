@@ -112,7 +112,7 @@ func (s Schedule) GetTitle(d Day) string {
 }
 
 func (s Schedule) GetTime() []string {
-	last := s.Days[0].Day.Add(18 * time.Hour)
+	last := s.Days[0].Day.Add(16 * time.Hour).Add(45 * time.Minute)
 
 	times := make([]string, 0)
 	for t := s.Days[0].Day; t.Before(last); t = t.Add(5 * time.Minute) {

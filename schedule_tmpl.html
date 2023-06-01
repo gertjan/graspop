@@ -4,7 +4,7 @@
     <style>
         .schedule {
             display: grid;
-            grid-column-gap: 2px;
+            grid-column-gap: 0.8em;
             grid-template-columns:
                     [stage-1-start] 1fr
                     [stage-1-end stage-2-start] 1fr
@@ -15,7 +15,7 @@
             grid-template-rows:
                     [stages] auto
                     {{ range .GetTime }}
-                    [{{ . }}] auto
+                    [{{ . }}] 5px
                     {{ end }};
         }
 
@@ -29,8 +29,8 @@
         }
 
         .band {
-            border-radius: .5em;
-            padding: .8em;
+            margin: 1px;
+            padding: 0.3em;
             border: 1px solid black;
         }
 
