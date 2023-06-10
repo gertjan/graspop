@@ -107,6 +107,47 @@ func (d *Day) retrieveSchedule() {
 	d.getBands(doc)
 }
 
+var stages = []string{
+	"South Stage", "North Stage", "Marquee", "Jupiler Stage", "Metal Dome",
+}
+
+func (d *Day) findBand(stage string, index int) Band {
+	i := 0
+	for _, b := range d.Bands {
+		if b.Stage == stage {
+			if i == index {
+				return b
+			}
+			i++
+		}
+	}
+
+	return Band{}
+}
+
+func (d *Day) ToTable() [][]string {
+	table := make([][]string, 0)
+	table = append(table, stages)
+
+	found := false
+	for i := 0; ; i++ {
+		row := make([]string, len(stages))
+		found = false
+		for j := 0; j < len(stages); j++ {
+			b := d.findBand(stages[j], i)
+			if b.Name != "" {
+				found = true
+				row[j] = fmt.Sprintf("%s %s", b.IntervalStr(), b.Name)
+			}
+		}
+		if found {
+			table = append(table, row)
+		} else {
+			return table
+		}
+	}
+}
+
 func (s Schedule) GetTitle(d Day) string {
 	return strings.ToTitle(strings.TrimSuffix(strings.TrimPrefix(d.Url, "https://www.graspop.be/nl/line-up/"), "/schedule"))
 }
@@ -158,6 +199,18 @@ func (s Schedule) GetStageIndex(stageName string) string {
 
 }
 
+func execTemplate(s Schedule, tmpl string, outName string) {
+	t, err := template.ParseFiles(tmpl)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	out, _ := os.Create(outName)
+	if err = t.Execute(out, s); err != nil {
+		log.Fatal(err)
+	}
+}
+
 func main() {
 	footnote := time.Now().Format("Retrieved from https://www.graspop.be - 2006-01-02 15:04")
 
@@ -169,11 +222,6 @@ func main() {
 		{time.Date(2023, 6, 18, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
 	}
 
-	t, err := template.ParseFiles("schedule_tmpl.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	for _, d := range days {
 		d.retrieveSchedule()
 	}
@@ -183,8 +231,12 @@ func main() {
 		Footnote: footnote,
 	}
 
-	out, _ := os.Create("index.html")
-	if err = t.Execute(out, s); err != nil {
-		log.Fatal(err)
+	for _, d := range s.Days {
+		for _, b := range d.Bands {
+			log.Println(b)
+		}
 	}
+
+	execTemplate(s, "schedule_tmpl.html", "index.html")
+	execTemplate(s, "compact_tmpl.html", "compact.html")
 }

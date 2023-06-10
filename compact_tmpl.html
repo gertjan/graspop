@@ -1,0 +1,69 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        h1 {
+            font-size: 10px;
+            text-align: center;
+            margin: 0px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            /*border-radius: 10px;*/
+            font-size: 8px;
+        }
+
+        table{
+            max-width: 3500px;
+            width:100%;
+            table-layout: fixed;
+        }
+
+        .stage {
+            text-align: center;
+            grid-row: stages;
+        }
+
+        .band {
+            margin: 1px;
+            padding: 0.3em;
+            border: 1px solid black;
+        }
+
+        .bandName {
+            font-size: 12px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        .bandInterval {
+            font-size: 10px;
+        }
+
+
+            body{
+                margin: 0mm 0mm 0mm 0mm;
+                /* change the margins as you want them to be. */
+            }
+
+            .footnote {
+                text-align: center;
+                font-size: 8px;
+                page-break-after:always;
+            }
+    </style>
+</head>
+<body>
+{{ range .Days }}
+<h1>{{ $.GetTitle . }}</h1>
+<table>
+    {{ range .ToTable }}
+        <tr>
+            {{ range . }}<td>{{ . }}</td>{{ end }}
+        </tr>
+    {{ end }}
+</table>
+{{ end }}
+</body>
+</html>
