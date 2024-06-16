@@ -80,7 +80,18 @@ func (d *Day) toTime(str string) time.Time {
 }
 
 func (d *Day) addBand(name string, start time.Time, end time.Time) {
+	// filters
 	if d.Stage == "Classic Rock Café" {
+		return
+	}
+
+	if d.Stage == "Metal Dome" {
+		if start.Hour() < 4 {
+			return
+		}
+	}
+
+	if name == "Golden Moment" {
 		return
 	}
 
@@ -164,7 +175,7 @@ func (s Schedule) GetTime() []string {
 }
 
 func (s Schedule) GetDisplayTimes() []string {
-	last := s.Days[0].Day.Add(14 * time.Hour)
+	last := s.Days[0].Day.Add(13 * time.Hour).Add(30 * time.Minute)
 
 	times := make([]string, 0)
 	for t := s.Days[0].Day; t.Before(last); t = t.Add(30 * time.Minute) {
@@ -180,7 +191,6 @@ type Schedule struct {
 }
 
 func (s Schedule) GetStageIndex(stageName string) string {
-
 	switch stageName {
 	case "South Stage":
 		return "stage-1"
@@ -216,10 +226,10 @@ func main() {
 
 	bands := make([]Band, 0)
 	days := []*Day{
-		{time.Date(2023, 6, 15, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
-		{time.Date(2023, 6, 16, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
-		{time.Date(2023, 6, 17, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
-		{time.Date(2023, 6, 18, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
+		{time.Date(2024, 6, 20, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
+		{time.Date(2024, 6, 21, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
+		{time.Date(2024, 6, 22, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
+		{time.Date(2024, 6, 23, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
 	}
 
 	for _, d := range days {
