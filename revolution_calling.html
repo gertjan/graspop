@@ -1,0 +1,527 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        .schedule {
+            display: grid;
+            grid-column-gap: 0.8em;
+            grid-template-columns:
+                    [stage-1-start] 1fr
+                    [stage-1-end stage-2-start] 1fr
+                    [stage-2-end stage-3-start] 1fr
+                    [stage-3-end];
+            grid-template-rows:
+                    [stages] auto
+                    [time-1230] auto
+                    [time-1235] auto
+                    [time-1240] auto
+                    
+                    [time-1245] auto
+                    
+                    [time-1250] auto
+                    
+                    [time-1255] auto
+                    
+                    [time-1300] auto
+                    
+                    [time-1305] auto
+                    
+                    [time-1310] auto
+                    
+                    [time-1315] auto
+                    
+                    [time-1320] auto
+                    
+                    [time-1325] auto
+                    
+                    [time-1330] auto
+                    
+                    [time-1335] auto
+                    
+                    [time-1340] auto
+                    
+                    [time-1345] auto
+                    
+                    [time-1350] auto
+                    
+                    [time-1355] auto
+                    
+                    [time-1400] auto
+                    
+                    [time-1405] auto
+                    
+                    [time-1410] auto
+                    
+                    [time-1415] auto
+                    
+                    [time-1420] auto
+                    
+                    [time-1425] auto
+                    
+                    [time-1430] auto
+                    
+                    [time-1435] auto
+                    
+                    [time-1440] auto
+                    
+                    [time-1445] auto
+                    
+                    [time-1450] auto
+                    
+                    [time-1455] auto
+                    
+                    [time-1500] auto
+                    
+                    [time-1505] auto
+                    
+                    [time-1510] auto
+                    
+                    [time-1515] auto
+                    
+                    [time-1520] auto
+                    
+                    [time-1525] auto
+                    
+                    [time-1530] auto
+                    
+                    [time-1535] auto
+                    
+                    [time-1540] auto
+                    
+                    [time-1545] auto
+                    
+                    [time-1550] auto
+                    
+                    [time-1555] auto
+                    
+                    [time-1600] auto
+                    
+                    [time-1605] auto
+                    
+                    [time-1610] auto
+                    
+                    [time-1615] auto
+                    
+                    [time-1620] auto
+                    
+                    [time-1625] auto
+                    
+                    [time-1630] auto
+                    
+                    [time-1635] auto
+                    
+                    [time-1640] auto
+                    
+                    [time-1645] auto
+                    
+                    [time-1650] auto
+                    
+                    [time-1655] auto
+                    
+                    [time-1700] auto
+                    
+                    [time-1705] auto
+                    
+                    [time-1710] auto
+                    
+                    [time-1715] auto
+                    
+                    [time-1720] auto
+                    
+                    [time-1725] auto
+                    
+                    [time-1730] auto
+                    
+                    [time-1735] auto
+                    
+                    [time-1740] auto
+                    
+                    [time-1745] auto
+                    
+                    [time-1750] auto
+                    
+                    [time-1755] auto
+                    
+                    [time-1800] auto
+                    
+                    [time-1805] auto
+                    
+                    [time-1810] auto
+                    
+                    [time-1815] auto
+                    
+                    [time-1820] auto
+                    
+                    [time-1825] auto
+                    
+                    [time-1830] auto
+                    
+                    [time-1835] auto
+                    
+                    [time-1840] auto
+                    
+                    [time-1845] auto
+                    
+                    [time-1850] auto
+                    
+                    [time-1855] auto
+                    
+                    [time-1900] auto
+                    
+                    [time-1905] auto
+                    
+                    [time-1910] auto
+                    
+                    [time-1915] auto
+                    
+                    [time-1920] auto
+                    
+                    [time-1925] auto
+                    
+                    [time-1930] auto
+                    
+                    [time-1935] auto
+                    
+                    [time-1940] auto
+                    
+                    [time-1945] auto
+                    
+                    [time-1950] auto
+                    
+                    [time-1955] auto
+                    
+                    [time-2000] auto
+                    
+                    [time-2005] auto
+                    
+                    [time-2010] auto
+                    
+                    [time-2015] auto
+                    
+                    [time-2020] auto
+                    
+                    [time-2025] auto
+                    
+                    [time-2030] auto
+                    
+                    [time-2035] auto
+                    
+                    [time-2040] auto
+                    
+                    [time-2045] auto
+                    
+                    [time-2050] auto
+                    
+                    [time-2055] auto
+                    
+                    [time-2100] auto
+                    
+                    [time-2105] auto
+                    
+                    [time-2110] auto
+                    
+                    [time-2115] auto
+                    
+                    [time-2120] auto
+                    
+                    [time-2125] auto
+                    
+                    [time-2130] auto
+                    
+                    [time-2135] auto
+                    
+                    [time-2140] auto
+                    
+                    [time-2145] auto
+                    
+                    [time-2150] auto
+                    
+                    [time-2155] auto
+                    
+                    [time-2200] auto
+                    
+                    [time-2205] auto
+                    
+                    [time-2210] auto
+                    
+                    [time-2215] auto
+                    
+                    [time-2220] auto
+                    
+                    [time-2225] auto
+                    
+                    [time-2230] auto
+                    
+                    [time-2235] auto
+                    
+                    [time-2240] auto
+                    
+                    [time-2245] auto
+                    
+                    [time-2250] auto
+                    
+                    [time-2255] auto
+                    
+                    [time-2300] auto
+                    
+                    [time-2305] auto
+                    
+                    [time-2310] auto
+                    
+                    [time-2315] auto
+                    
+                    [time-2320] auto
+                    
+                    [time-2325] auto
+                    
+                    [time-2330] auto
+                    
+                    [time-2335] auto
+                    
+                    [time-2340] auto
+                    
+                    [time-2345] auto
+                    
+                    [time-2350] auto
+                    
+                    [time-2355] auto
+                    
+                    [time-0000] auto
+                    
+                    [time-0005] auto
+                    
+                    [time-0010] auto
+                    
+                    [time-0015] auto
+                    
+                    [time-0020] auto
+                    
+                    [time-0025] auto
+                    
+                    [time-0030] auto
+                    
+                    [time-0035] auto
+                    
+                    [time-0040] auto
+                    
+                    [time-0045] auto
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .stage {
+            text-align: center;
+            grid-row: stages;
+        }
+
+        .band {
+            margin: 1px;
+            padding: 0.3em;
+            border: 1px solid black;
+        }
+
+        .yes {
+            background: linear-gradient(
+                    90deg,
+                    White,
+                    Grey
+            );
+        }
+
+        .maybe {
+            background: linear-gradient(
+                    90deg,
+                    White,
+                    LightGrey
+            );
+        }
+
+        .bandName {
+            font-size: 12px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        .bandInterval {
+            font-size: 10px;
+        }
+
+
+        body {
+            width: 21cm;
+            height: 29.7cm;
+            margin: 0mm 0mm 0mm 0mm;
+
+        }
+
+        .footnote {
+            text-align: center;
+            font-size: 8px;
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+
+<h1>REVOLUTION CALLING</h1>
+<div class='schedule'>
+    <h3 class='stage' style="grid-column: stage-1;">Revolution Stage</h3>
+    <h3 class='stage' style="grid-column: stage-2;">Stronger Stage</h3>
+    <h3 class='stage' style="grid-column: stage-3;">Warzone Stage</h3>
+
+    <!--REVOLUTION-->
+    <div class="band" style="grid-column: stage-1; grid-row: time-1250 / time-1310;">
+        <div class="bandName">BULLBAR</div>
+        <div class="bandInterval">12:50 - 13:10</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-1330 / time-1355;">
+        <div class="bandName">CRAN</div>
+        <div class="bandInterval">13:30 - 13:55</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-1420 / time-1455;">
+        <div class="bandName">UNDYING</div>
+        <div class="bandInterval">14:20 - 14:55</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-1520 / time-1555;">
+        <div class="bandName">HARDSELL</div>
+        <div class="bandInterval">15:20 - 15:55</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-1635 / time-1720;">
+        <div class="bandName">INTEGRITY</div>
+        <div class="bandInterval">16:35 - 17:20</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-1800 / time-1845;">
+        <div class="bandName">JUDGE</div>
+        <div class="bandInterval">18:00 - 18:45</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-1930 / time-2030;">
+        <div class="bandName">THE EXPLOITED</div>
+        <div class="bandInterval">19:30 - 20:30</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-2120 / time-2220;">
+        <div class="bandName">AGNOSTIC FRONT</div>
+        <div class="bandInterval">21:20 - 22:20</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-1; grid-row: time-2330 / time-0045;">
+        <div class="bandName">BIOHAZARD</div>
+        <div class="bandInterval">23:30 - 00:45</div>
+    </div>
+
+    <!--STRONGER-->
+    <div class="band" style="grid-column: stage-2; grid-row: time-1310 / time-1330;">
+        <div class="bandName">SWELL</div>
+        <div class="bandInterval">13:10 - 13:30</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-2; grid-row: time-1355 / time-1420;">
+        <div class="bandName">PROWL</div>
+        <div class="bandInterval">13:55 - 14:20</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-2; grid-row: time-1455 / time-1520;">
+        <div class="bandName">HEADBUSSA</div>
+        <div class="bandInterval">14:55 - 15:20</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-2; grid-row: time-1555 / time-1635;">
+        <div class="bandName">BULLDOZE</div>
+        <div class="bandInterval">15:55 - 16:35</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-2; grid-row: time-1720 / time-1800;">
+        <div class="bandName">NO TURNING BACK</div>
+        <div class="bandInterval">17:20 - 18:00</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-2; grid-row: time-1845 / time-1930;">
+        <div class="bandName">COMEBACK KID</div>
+        <div class="bandInterval">18:45 - 19:30</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-2; grid-row: time-2030 / time-2120;">
+        <div class="bandName">CIV</div>
+        <div class="bandInterval">20:30 - 21:20</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-2; grid-row: time-2220 / time-2315;">
+        <div class="bandName">UNBROKEN</div>
+        <div class="bandInterval">22:20 - 23:15</div>
+    </div>
+
+
+    <!--WARZONE-->
+    <div class="band" style="grid-column: stage-3; grid-row: time-1230 / time-1250;">
+        <div class="bandName">EYESORES</div>
+        <div class="bandInterval">12:30 - 12:50</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-1330 / time-1355;">
+        <div class="bandName">HETZE</div>
+        <div class="bandInterval">13:30 - 13:55</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-1410 / time-1435;">
+        <div class="bandName">SCHEDULE 1</div>
+        <div class="bandInterval">14:10 - 14:35</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-1450 / time-1525;">
+        <div class="bandName">ALL FOR NOTHING</div>
+        <div class="bandInterval">14:50 - 15:25</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-1540 / time-1615;">
+        <div class="bandName">REPROACH</div>
+        <div class="bandInterval">15:40 - 16:15</div>
+    </div>
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-1635 / time-1720;">
+        <div class="bandName">MURPHY'S LAW</div>
+        <div class="bandInterval">16:35 - 17:20</div>
+    </div>
+
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-1800 / time-1845;">
+        <div class="bandName">VIOLENT WAY</div>
+        <div class="bandInterval">18:00 - 18:45</div>
+    </div>
+
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-1905 / time-1955;">
+        <div class="bandName">ALL OUT WAR</div>
+        <div class="bandInterval">19:05 - 19:55</div>
+    </div>
+
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-2010 / time-2100;">
+        <div class="bandName">WORST DOUBT</div>
+        <div class="bandInterval">20:10 - 21:00</div>
+    </div>
+
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-2120 / time-2210;">
+        <div class="bandName">CONGRESS</div>
+        <div class="bandInterval">21:20 - 22:10</div>
+    </div>
+
+
+    <div class="band" style="grid-column: stage-3; grid-row: time-2235 / time-2325;">
+        <div class="bandName">LIONS LAW</div>
+        <div class="bandInterval">22:35 - 23:25</div>
+    </div>
+
+
+</div>
+
+</body>
+</html>
