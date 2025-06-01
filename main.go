@@ -51,9 +51,10 @@ func (d *Day) getBands(n *html.Node) {
 	if n.Type == html.ElementNode && n.Data == "a" {
 		for _, a := range n.Attr {
 			if a.Key == "class" && a.Val == "act-schedule__acts-act" {
-				name := n.FirstChild.NextSibling.FirstChild.Data
-				start := n.FirstChild.NextSibling.NextSibling.NextSibling.FirstChild.Data
-				end := n.FirstChild.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.FirstChild.Data
+				r := n.FirstChild.NextSibling.FirstChild.NextSibling
+				name := r.FirstChild.Data
+				start := r.NextSibling.NextSibling.FirstChild.Data
+				end := r.NextSibling.NextSibling.NextSibling.NextSibling.FirstChild.Data
 
 				d.addBand(name, d.toTime(start), d.toTime(end))
 			}
@@ -79,24 +80,20 @@ func (d *Day) toTime(str string) time.Time {
 	return result
 }
 
+func shorten(s string) string {
+	if len(s) < 18 {
+		return s
+	}
+	return fmt.Sprintf("%.15s...", s)
+}
 func (d *Day) addBand(name string, start time.Time, end time.Time) {
 	// filters
 	if d.Stage == "Classic Rock Café" {
 		return
 	}
 
-	if d.Stage == "Metal Dome" {
-		if start.Hour() < 4 {
-			return
-		}
-	}
-
-	if name == "Golden Moment" {
-		return
-	}
-
 	d.Bands = append(d.Bands, Band{
-		Name:  name,
+		Name:  shorten(name),
 		Stage: d.Stage,
 		Start: start,
 		End:   end,
@@ -226,10 +223,10 @@ func main() {
 
 	bands := make([]Band, 0)
 	days := []*Day{
-		{time.Date(2024, 6, 20, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
-		{time.Date(2024, 6, 21, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
-		{time.Date(2024, 6, 22, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
-		{time.Date(2024, 6, 23, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
+		{time.Date(2025, 6, 19, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
+		{time.Date(2025, 6, 20, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
+		{time.Date(2025, 6, 21, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
+		{time.Date(2025, 6, 22, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
 	}
 
 	for _, d := range days {
