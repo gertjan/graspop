@@ -39,12 +39,19 @@ func (b Band) IntervalStr() string {
 	return fmt.Sprintf("%v - %v", b.Start.Format("15:04"), b.End.Format("15:04"))
 }
 
+func getAttrVal(node *html.Node, key string) string {
+	for _, attr := range node.Attr {
+		if attr.Key == key {
+			return attr.Val
+		}
+	}
+	return ""
+}
+
 func (d *Day) getBands(n *html.Node) {
-	if n.Type == html.ElementNode && n.Data == "h4" {
-		for _, a := range n.Attr {
-			if a.Key == "class" && a.Val == "act-schedule__title" {
-				d.Stage = n.FirstChild.Data
-			}
+	if n.Type == html.ElementNode && n.Data == "section" {
+		if getAttrVal(n, "class") == "act-schedule__stage" {
+			d.Stage = getAttrVal(n, "id")
 		}
 	}
 
@@ -246,4 +253,6 @@ func main() {
 
 	execTemplate(s, "schedule_tmpl.html", "index.html")
 	execTemplate(s, "compact_tmpl.html", "compact.html")
+
+	log.Println("Done")
 }
