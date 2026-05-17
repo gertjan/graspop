@@ -230,10 +230,10 @@ func main() {
 
 	bands := make([]Band, 0)
 	days := []*Day{
-		{time.Date(2025, 6, 19, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
-		{time.Date(2025, 6, 20, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
-		{time.Date(2025, 6, 21, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
-		{time.Date(2025, 6, 22, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
+		{time.Date(2025, 6, 18, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
+		{time.Date(2025, 6, 19, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
+		{time.Date(2025, 6, 20, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
+		{time.Date(2025, 6, 21, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
 	}
 
 	for _, d := range days {
