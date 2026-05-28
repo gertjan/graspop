@@ -14,10 +14,32 @@ import (
 )
 
 type Day struct {
-	Day   time.Time
-	Url   string
-	Stage string
+	Day           time.Time
+	Url           string
+	Stage         string
+	Bands         []Band
+	FilteredBands []Band
+}
+
+type FilteredStage struct {
+	Name  string
 	Bands []Band
+}
+
+func (d *Day) FilteredStages() []FilteredStage {
+	stageMap := make(map[string][]Band)
+	stageOrder := make([]string, 0)
+	for _, b := range d.FilteredBands {
+		if _, ok := stageMap[b.Stage]; !ok {
+			stageOrder = append(stageOrder, b.Stage)
+		}
+		stageMap[b.Stage] = append(stageMap[b.Stage], b)
+	}
+	result := make([]FilteredStage, 0, len(stageOrder))
+	for _, name := range stageOrder {
+		result = append(result, FilteredStage{Name: name, Bands: stageMap[name]})
+	}
+	return result
 }
 
 type Band struct {
@@ -94,17 +116,17 @@ func shorten(s string) string {
 	return fmt.Sprintf("%.15s...", s)
 }
 func (d *Day) addBand(name string, start time.Time, end time.Time) {
-	// filters
-	if d.Stage == "Classic Rock Café" {
-		return
-	}
-
-	d.Bands = append(d.Bands, Band{
+	b := Band{
 		Name:  shorten(name),
 		Stage: d.Stage,
 		Start: start,
 		End:   end,
-	})
+	}
+	if d.Stage == "Classic Rock Café" || (d.Stage == "Metal Dome" && start.Day() != d.Day.Day()) {
+		d.FilteredBands = append(d.FilteredBands, b)
+		return
+	}
+	d.Bands = append(d.Bands, b)
 }
 
 func (d *Day) retrieveSchedule() {
@@ -228,12 +250,11 @@ func execTemplate(s Schedule, tmpl string, outName string) {
 func main() {
 	footnote := time.Now().Format("Retrieved from https://www.graspop.be - 2006-01-02 15:04")
 
-	bands := make([]Band, 0)
 	days := []*Day{
-		{time.Date(2025, 6, 18, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/donderdag/schedule", "", bands},
-		{time.Date(2025, 6, 19, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/vrijdag/schedule", "", bands},
-		{time.Date(2025, 6, 20, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zaterdag/schedule", "", bands},
-		{time.Date(2025, 6, 21, 12, 0, 0, 0, time.UTC), "https://www.graspop.be/nl/line-up/zondag/schedule", "", bands},
+		{Day: time.Date(2025, 6, 18, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/donderdag/schedule"},
+		{Day: time.Date(2025, 6, 19, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/vrijdag/schedule"},
+		{Day: time.Date(2025, 6, 20, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/zaterdag/schedule"},
+		{Day: time.Date(2025, 6, 21, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/zondag/schedule"},
 	}
 
 	for _, d := range days {

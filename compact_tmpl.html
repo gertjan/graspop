@@ -64,6 +64,11 @@
         </tr>
     {{ end }}
 </table>
+{{ if .FilteredBands }}
+<div style="font-size:7px;margin:1px 0;">
+{{ range .FilteredStages }}<b>{{ .Name }}:</b>{{ range .Bands }} {{ .IntervalStr }} {{ .Name }} |{{ end }}<br>{{ end }}
+</div>
+{{ end }}
 {{ end }}
 </body>
 </html>
