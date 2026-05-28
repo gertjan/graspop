@@ -3,7 +3,7 @@
     <meta charset="UTF-8"/>
     <style>
         h1 {
-            font-size: 10px;
+            font-size: 8px;
             text-align: center;
             margin: 0px;
         }
@@ -12,6 +12,9 @@
             border: 1px solid black;
             /*border-radius: 10px;*/
             font-size: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         table{
@@ -56,7 +59,7 @@
 </head>
 <body>
 {{ range .Days }}
-<h1>{{ $.GetTitle . }}</h1>
+<h1>{{ .FullTitle }}</h1>
 <table>
     {{ range .ToTable }}
         <tr>

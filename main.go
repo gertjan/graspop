@@ -109,20 +109,14 @@ func (d *Day) toTime(str string) time.Time {
 	return result
 }
 
-func shorten(s string) string {
-	if len(s) < 18 {
-		return s
-	}
-	return fmt.Sprintf("%.15s...", s)
-}
 func (d *Day) addBand(name string, start time.Time, end time.Time) {
 	b := Band{
-		Name:  shorten(name),
+		Name:  name,
 		Stage: d.Stage,
 		Start: start,
 		End:   end,
 	}
-	if d.Stage == "Classic Rock Café" || (d.Stage == "Metal Dome" && start.Day() != d.Day.Day()) {
+	if d.Stage == "Classic Rock Café" {
 		d.FilteredBands = append(d.FilteredBands, b)
 		return
 	}
@@ -189,14 +183,20 @@ func (s Schedule) GetTitle(d Day) string {
 	return strings.ToTitle(strings.TrimSuffix(strings.TrimPrefix(d.Url, "https://www.graspop.be/nl/line-up/"), "/schedule"))
 }
 
-func (s Schedule) GetTime() []string {
-	last := s.Days[0].Day.Add(16 * time.Hour).Add(45 * time.Minute)
-
+func (s Schedule) GetTimeForDay(d Day) []string {
+	var last time.Time
+	for _, b := range d.Bands {
+		if b.End.After(last) {
+			last = b.End
+		}
+	}
+	if last.IsZero() {
+		last = d.Day.Add(16*time.Hour + 45*time.Minute)
+	}
 	times := make([]string, 0)
-	for t := s.Days[0].Day; t.Before(last); t = t.Add(5 * time.Minute) {
+	for t := d.Day; t.Before(last); t = t.Add(5 * time.Minute) {
 		times = append(times, t.Format("time-1504"))
 	}
-
 	return times
 }
 
@@ -209,6 +209,10 @@ func (s Schedule) GetDisplayTimes() []string {
 	}
 
 	return times
+}
+
+func (d *Day) FullTitle() string {
+	return d.Day.Format("Monday 2 January 2006")
 }
 
 type Schedule struct {
@@ -251,10 +255,10 @@ func main() {
 	footnote := time.Now().Format("Retrieved from https://www.graspop.be - 2006-01-02 15:04")
 
 	days := []*Day{
-		{Day: time.Date(2025, 6, 18, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/donderdag/schedule"},
-		{Day: time.Date(2025, 6, 19, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/vrijdag/schedule"},
-		{Day: time.Date(2025, 6, 20, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/zaterdag/schedule"},
-		{Day: time.Date(2025, 6, 21, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/zondag/schedule"},
+		{Day: time.Date(2026, 6, 18, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/donderdag/schedule"},
+		{Day: time.Date(2026, 6, 19, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/vrijdag/schedule"},
+		{Day: time.Date(2026, 6, 20, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/zaterdag/schedule"},
+		{Day: time.Date(2026, 6, 21, 12, 0, 0, 0, time.UTC), Url: "https://www.graspop.be/nl/line-up/zondag/schedule"},
 	}
 
 	for _, d := range days {

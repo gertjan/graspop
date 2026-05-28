@@ -12,15 +12,20 @@
                     [stage-3-end stage-4-start] 1fr
                     [stage-4-end stage-5-start] 1fr
                     [stage-5-end];
+        }
+        {{ range .Days }}
+        .schedule-{{ $.GetTitle . }} {
             grid-template-rows:
                     [stages] auto
-                    {{ range .GetTime }}
-                    [{{ . }}] 5px
+                    {{ range $.GetTimeForDay . }}
+                    [{{ . }}] auto
                     {{ end }};
         }
+        {{ end }}
 
         h1 {
             text-align: center;
+            font-size: 14px;
         }
 
         .stage {
@@ -32,12 +37,14 @@
             margin: 1px;
             padding: 0.3em;
             border: 1px solid black;
+            overflow: hidden;
         }
 
         .bandName {
             font-size: 12px;
             font-weight: bold;
             font-family: Arial, sans-serif;
+            overflow-wrap: break-word;
         }
 
         .bandInterval {
@@ -61,8 +68,9 @@
 </head>
 <body>
 {{ range .Days }}
-<h1>{{ $.GetTitle . }}</h1>
-<div class='schedule'>
+<div style="page-break-after: always;">
+<h1>{{ .FullTitle }}</h1>
+<div class='schedule schedule-{{ $.GetTitle . }}'>
     <h3 class='stage' style="grid-column: stage-1;">South Stage</h3>
     <h3 class='stage' style="grid-column: stage-2;">North Stage</h3>
     <h3 class='stage' style="grid-column: stage-3;">Marquee</h3>
@@ -81,6 +89,7 @@
 {{ range .FilteredStages }}<b>{{ .Name }}:</b>{{ range .Bands }} {{ .IntervalStr }} {{ .Name }} |{{ end }}<br>{{ end }}
 </div>
 {{ end }}
+</div>
 {{ end }}
 </body>
 </html>
