@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"html/template"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	qrcode "github.com/skip2/go-qrcode"
 	"golang.org/x/net/html"
 )
 
@@ -218,6 +220,7 @@ func (d *Day) FullTitle() string {
 type Schedule struct {
 	Days     []*Day
 	Footnote string
+	QRCode   template.URL
 }
 
 func (s Schedule) GetStageIndex(stageName string) string {
@@ -265,9 +268,16 @@ func main() {
 		d.retrieveSchedule()
 	}
 
+	qrBytes, err := qrcode.Encode("https://gertjan.github.io/graspop", qrcode.Medium, 128)
+	if err != nil {
+		log.Fatal(err)
+	}
+	qrDataURI := template.URL("data:image/png;base64," + base64.StdEncoding.EncodeToString(qrBytes))
+
 	s := Schedule{
 		Days:     days,
 		Footnote: footnote,
+		QRCode:   qrDataURI,
 	}
 
 	for _, d := range s.Days {
@@ -277,7 +287,6 @@ func main() {
 	}
 
 	execTemplate(s, "schedule_tmpl.html", "index.html")
-	execTemplate(s, "compact_tmpl.html", "compact.html")
 
 	log.Println("Done")
 }

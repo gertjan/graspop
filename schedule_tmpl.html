@@ -84,11 +84,14 @@
         </div>
     {{ end }}
 </div>
+<div style="display:flex;align-items:flex-start;margin-top:50px;gap:20px;">
+<img src="{{ $.QRCode }}" width="128" height="128" style="flex-shrink:0;">
 {{ if .FilteredBands }}
-<div style="font-size:9px;margin:4px 0;">
-{{ range .FilteredStages }}<b>{{ .Name }}:</b>{{ range .Bands }} {{ .IntervalStr }} {{ .Name }} |{{ end }}<br>{{ end }}
+<div style="font-size:12px;margin-top:15px;">
+{{ range .FilteredStages }}<b>{{ .Name }}</b><ul>{{ range .Bands }}<li>{{ .IntervalStr }} {{ .Name }}</li>{{ end }}</ul>{{ end }}
 </div>
 {{ end }}
+</div>
 </div>
 {{ end }}
 </body>
